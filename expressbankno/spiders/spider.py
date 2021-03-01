@@ -13,6 +13,9 @@ class ExpressbanknoSpider(scrapy.Spider):
 		post_links = response.xpath('//a[contains(@class, "post-image")]/@href').getall()
 		yield from response.follow_all(post_links, self.parse_post)
 
+		pages_links = response.xpath('//header//nav[@class="menu"]//ul/li/a/@href').getall()
+		yield from response.follow_all(pages_links, self.parse)
+
 	def parse_post(self, response):
 		title = response.xpath('//h1/text()').get()
 		description = response.xpath('//div[@class="grid-col-3of4"]//text()[normalize-space() and not(ancestor::h1 | ancestor::div[@class="meta-data"])]').getall()
